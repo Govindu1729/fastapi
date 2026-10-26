@@ -719,6 +719,8 @@ def get_request_handler(
                     **response_args,
                 )
                 response.headers.raw.extend(solved_result.response.headers.raw)
+                # For Nginx proxies to not buffer JSONL streaming responses
+                response.headers["X-Accel-Buffering"] = "no"
             elif _is_async_gen_callable(dependant.call) or _is_gen_callable(
                 dependant.call
             ):
